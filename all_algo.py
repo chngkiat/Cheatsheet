@@ -28,3 +28,24 @@ class Solution:
             current_cumsum = max(0, current_cumsum + values)
             max_cumsum = max(max_cumsum, current_cumsum)
         return max_cumsum
+
+    def longestValidParentheses(self, s: str) -> int:
+        """
+        Uses a stack to trace the positions of all open parenthesis and slowly remove the valid parenthesis from the back. Can be used 
+        for 1 and 0 pair matchings
+
+        Inputs: s --> String: string of parenthesis to identify and check
+        Output: Integer: Max length of valid parenthesis
+        """
+        max_len = 0
+        stack = [-1]
+        for i in range(len(s)):
+            if s[i] == "(":
+                stack.append(i)
+            else:
+                if stack and stack[-1]!=-1 and s[stack[-1]] == "(":
+                    stack = stack[:-1]
+                    max_len = max(max_len, i - stack[-1])
+                else:
+                    stack.append(i)
+        return max_len
