@@ -41,6 +41,7 @@ class Solution:
         stack = [-1]
         for i in range(len(s)):
             if s[i] == "(":
+                
                 stack.append(i)
             else:
                 if stack and stack[-1]!=-1 and s[stack[-1]] == "(":
@@ -49,3 +50,21 @@ class Solution:
                 else:
                     stack.append(i)
         return max_len
+
+    def maxprofit2(self, ts: list) -> int:
+        '''
+        Uses cumulative sum to find the maximum profits from 2 trades with buy - sell - buy - sell structure. Can be extended to 
+        3 trades and more, though we will need more indexes so no overlapping occurs.
+
+        Input ts --> list: List of closing prices to compute the 2 trade max profit
+        Output: Integer: Max profit attainable in the time series using 2 trades
+        '''
+        n = len(ts)
+        profit = []
+        for i in range(1,n):
+            profit += [ts[i]-ts[i-1],]
+        max_profit = 0
+        for i in range(n-1):
+            peak_profits = self.maxCumSumInList(profit[:i]) + self.maxCumSumInList(profit[i:n-1])
+            max_profit = max(max_profit,peak_profits)
+        return max_profit
