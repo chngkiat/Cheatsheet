@@ -68,3 +68,17 @@ class Solution:
             peak_profits = self.maxCumSumInList(profit[:i]) + self.maxCumSumInList(profit[i:n-1])
             max_profit = max(max_profit,peak_profits)
         return max_profit
+    
+    def peakvalley(self,ts:list) -> int:
+        '''
+        Uses cumulative sum to find the maximum profits from unlimited trades with no overlapping structure. 
+
+        Input ts --> list: List of closing prices to compute the 2 trade max profit
+        Output: Integer: Max profit attainable in the time series.
+        '''
+        n = len(ts)
+        profit = 0
+        for i in range(1 , n):
+            profits = ts[i] - ts [i-1]
+            profit += max(0,profits)
+        return profit
