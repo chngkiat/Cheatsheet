@@ -82,3 +82,55 @@ class Solution:
             profits = ts[i] - ts [i-1]
             profit += max(0,profits)
         return profit
+    
+    def longestpalindromesubstr(self,st):
+        '''
+        Using DP to solve longest palindromic substr problem. Stores all index as the universe of substr,
+        and then always builds on top of the k-2 substr as universe until we get the longest substr
+        '''
+        
+        n = len (st)
+        
+        # check if entire string is palindrome. If yes just give
+        if st == st[::-1]:
+            return st
+        
+        table = {}
+        
+        # First to add in all index i as the universe to search
+        table[1] = [i for i in range(n)]
+        maxlength = 1
+        
+        # Next to fill all index where substr 2 are universes
+        i = 0
+        start = 0
+        
+        table[2] = []
+        while i < n-1:
+            if (st[i] == st[i+1]):
+                table[2].append(i)
+                maxlength = 2
+            i+=1
+         
+        # Now to fill everything else. We filter out all values which cant add 1 to the left and 1 to the right
+        # Using next so that we dont end up missing out even vs odd searches.
+        k = 3
+        while k <= n:
+            table[k] = []
+            table_index = k-2
+            if table[table_index] == []:
+                next
+            else:
+                search_universe = table[table_index]
+                for ele in search_universe:
+                    if ele > 0 and (ele + table_index) < n:
+                        if st[ele-1] == st[ele + table_index]:
+                            table[k].append(ele-1)
+                            maxlength = max(k,maxlength)
+            k+=1
+        
+        start = table[maxlength][0]
+        return table, st[start:(start + maxlength)]
+
+
+a = Solution()
